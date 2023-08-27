@@ -27,8 +27,9 @@ session_start();
 
         <?php if (isset($_SESSION["user_id"])) : ?>
             <p>You are logged in.</p>
+            <p><a href="logout.php">Log out</a></p>
         <?php else : ?>
-            <p><a href="login.php">Login</a> or <a href="signup.html"></a></p>
+            <p><a href="login.php">Login</a> or <a href="signup.html">sign up</a></p>
         <?php endif; ?>
     </main>
     <footer>
