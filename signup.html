@@ -30,7 +30,7 @@
       <div class="container">
         <br />
         <h1>Sing Up</h1>
-        <form action="process-signup.php" method="post">
+        <form action="process-signup.php" method="post" id="signup" novalidate>
           <div>
             <div class="mb-3">
               <label for="" class="form-label">Name</label>
@@ -102,5 +102,10 @@
       integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
       crossorigin="anonymous"
     ></script>
+    <script
+      src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"
+      defer
+    ></script>
+    <script src="js/validation.js" defer></script>
   </body>
 </html>
