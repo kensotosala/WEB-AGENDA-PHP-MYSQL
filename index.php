@@ -1,5 +1,22 @@
 <?php
+// Start a new session.
 session_start();
+
+// Check if the `user_id` session variable is set.
+if (isset($_SESSION["user_id"])) {
+
+    // Connect to the database.
+    $mysqli = require __DIR__ . "/database.php";
+
+    // Prepare the SQL query.
+    $sql = "SELECT * FROM users WHERE id = {$_SESSION["user_id"]}";
+
+    // Execute the SQL query.
+    $result = $mysqli->query($sql);
+
+    // Fetch the user row from the result set.
+    $user = $result->fetch_assoc();
+}
 
 ?>
 
@@ -25,12 +42,19 @@ session_start();
     <main>
         <h1>Home</h1>
 
-        <?php if (isset($_SESSION["user_id"])) : ?>
-            <p>You are logged in.</p>
+        <?php
+        // Check if the user key exists in the session array
+        if (isset($user)) : ?>
+            <!-- Display a greeting message with the user's name (escaping HTML characters) -->
+            <p>Hello <?= htmlspecialchars($user["name"]) ?></p>
+            <!-- Provide a link to log out -->
             <p><a href="logout.php">Log out</a></p>
         <?php else : ?>
+            <!-- If the user key doesn't exist in the session array, show these options -->
+            <!-- Provide links to login and signup pages -->
             <p><a href="login.php">Login</a> or <a href="signup.html">sign up</a></p>
         <?php endif; ?>
+
     </main>
     <footer>
     </footer>

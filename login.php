@@ -1,25 +1,48 @@
 <?php
 
+// Initialize the `is_invalid` variable to `false`.
 $is_invalid = false;
 
+// Check if the request method is `POST`.
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    // Connect to the database.
     $mysqli = require __DIR__ . "/database.php";
+
+    // Prepare the SQL query.
     $sql = sprintf("SELECT * FROM users WHERE email='%s'", $mysqli->real_escape_string($_POST["email"]));
+
+    // Execute the SQL query.
     $result = $mysqli->query($sql);
+
+    // Fetch the user row from the result set.
     $user = $result->fetch_assoc();
 
-
+    // Check if the user exists.
     if ($user) {
+
+        // Check if the password is valid.
         if (password_verify($_POST['password'], $user["password_hash"])) {
+
+            // Start a new session.
             session_start();
 
+            // Regenerate the session ID.
+            session_regenerate_id();
+
+            // Set the user ID in the session.
             $_SESSION["user_id"] = $user["id"];
+
+            // Redirect the user to the index page.
             header("Location: index.php");
             exit;
         }
     }
+
+    // Set the `is_invalid` variable to `true` if the user is not found or the password is invalid.
     $is_invalid = true;
 }
+
 
 ?>
 
@@ -79,7 +102,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <div class="card">
                             <div class="card-header text-center">
                                 <h4>Login</h4>
-                                <?php if ($is_invalid) : ?>
+                                <?php
+                                // Check if the login is considered invalid
+                                if ($is_invalid) : ?>
+                                    <!-- Display an error message if the login is invalid -->
                                     <em>Invalid login</em>
                                 <?php endif; ?>
                             </div>
