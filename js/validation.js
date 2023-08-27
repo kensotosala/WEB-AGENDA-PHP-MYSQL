@@ -15,6 +15,22 @@ validation
     {
       rule: "email",
     },
+    {
+      // Define a custom asynchronous validator function for email availability
+      validator: (value) => () => {
+        // Construct the URL for the validation PHP script with the encoded email value
+        return fetch("validate-email.php?email=" + encodeURIComponent(value))
+          .then(function (response) {
+            // Convert the response to JSON
+            return response.json();
+          })
+          .then(function (json) {
+            // Return the 'available' property from the JSON response
+            return json.available;
+          });
+      },
+      errorMessage: "email already taken", // Error message for unavailable email
+    },
   ])
   .addField("#password", [
     {
